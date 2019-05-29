@@ -9,6 +9,8 @@ protocol SubscriptionRepository: ServiceType {
 final class DefaultSubscriptionRepository: SubscriptionRepository {
     typealias ConnectionPool = DatabaseConnectionPool<ConfiguredDatabase<ServiceDatabase>>
 
+    static var serviceSupports: [Any.Type] = [SubscriptionRepository.self]
+
     let pool: ConnectionPool
 
     init(pool: ConnectionPool) {

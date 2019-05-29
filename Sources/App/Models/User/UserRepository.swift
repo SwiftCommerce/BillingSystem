@@ -10,6 +10,8 @@ protocol UserRepository: ServiceType {
 final class DefaultUserRepository: UserRepository {
     typealias ConnectionPool = DatabaseConnectionPool<ConfiguredDatabase<ServiceDatabase>>
 
+    static var serviceSupports: [Any.Type] = [UserRepository.self]
+
     let pool: ConnectionPool
 
     init(pool: ConnectionPool) {
