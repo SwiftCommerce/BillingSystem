@@ -16,4 +16,6 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     var databaseConfig = DatabasesConfig()
     try databases(config: &databaseConfig, env: env)
     services.register(databaseConfig)
+
+    try repositories(services: &services)
 }
