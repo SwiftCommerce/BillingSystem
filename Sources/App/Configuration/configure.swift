@@ -1,3 +1,4 @@
+import Fluent
 import Vapor
 
 /// Called before your application initializes.
@@ -16,6 +17,10 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     var databaseConfig = DatabasesConfig()
     try databases(config: &databaseConfig, env: env)
     services.register(databaseConfig)
+
+    var migrationConfig = MigrationConfig()
+    try migrations(config: &migrationConfig)
+    services.register(migrationConfig)
 
     try repositories(services: &services)
 }
