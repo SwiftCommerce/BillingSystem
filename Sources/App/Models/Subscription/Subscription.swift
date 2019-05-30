@@ -3,7 +3,7 @@ import FluentMySQL
 final class Subscription: Codable, CaseIterable {
     static let entity = "subscriptions"
 
-    private(set) var name: String?
+    private(set) var name: String!
 
     // Using `nil` as a value represents infinity.
     let maxAPICalls: UInt?
