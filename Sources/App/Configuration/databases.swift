@@ -1,7 +1,7 @@
-import Fluent
-import MySQL
+import FluentMySQL
 
-typealias ServiceDatabase = MySQLDatabase
+public typealias FluentProvider = FluentMySQLProvider
+public typealias ServiceDatabase = MySQLDatabase
 let databaseID: DatabaseIdentifier<ServiceDatabase> = .mysql
 
 func databases(config: inout DatabasesConfig, env: Environment)throws {
