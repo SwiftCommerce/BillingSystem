@@ -5,11 +5,13 @@ final class User: Codable {
 
     var id: Int?
     var customer: String
+    var external: String
     var service: CustomerBackend
 
-    init(customer: String, service: CustomerBackend) {
+    init(customer: String, external: String, service: CustomerBackend) {
         self.id = nil
         self.customer = customer
+        self.external = external
         self.service = service
     }
 }
