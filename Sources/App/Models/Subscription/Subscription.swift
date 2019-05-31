@@ -3,6 +3,15 @@ import FluentMySQL
 final class Subscription: Codable, CaseIterable {
     static let entity = "subscriptions"
 
+    static let allCases: [Subscription] = [.free, .hobby, .business]
+    static let subscriptions: [String: Subscription] = {
+        return Subscription.allCases.reduce(into: [:]) { map, subscription in map[subscription.name] = subscription }
+    }()
+
+    static let free: Subscription = Subscription(name: "Free", maxCalls: 5_000)
+    static let hobby: Subscription = Subscription(name: "Hobby", maxCalls: 25_000)
+    static let business: Subscription = Subscription(name: "Business", maxCalls: nil)
+
     private(set) var name: String!
 
     // Using `nil` as a value represents infinity.
@@ -14,12 +23,6 @@ final class Subscription: Codable, CaseIterable {
         self.maxAPICalls = maxCalls
         self.period = .month
     }
-
-    static let free: Subscription = Subscription(name: "Free", maxCalls: 5_000)
-    static let hobby: Subscription = Subscription(name: "Hobby", maxCalls: 25_000)
-    static let business: Subscription = Subscription(name: "Business", maxCalls: nil)
-
-    static var allCases: [Subscription] = [.free, .hobby, .business]
 }
 
 extension Subscription: Model {
