@@ -6,9 +6,11 @@ public func configure(_ config: inout Config, _ env: inout Environment, _ servic
     try services.register(FluentProvider())
 
     // Register routes to the router
-    let router = EngineRouter.default()
-    try routes(router)
-    services.register(router, as: Router.self)
+    services.register(Router.self) { container -> EngineRouter in
+        let router = EngineRouter.default()
+        try routes(router, container)
+        return router
+    }
 
     // Register middleware
     var middlewares = MiddlewareConfig() // Create _empty_ middleware config
