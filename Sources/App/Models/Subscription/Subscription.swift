@@ -20,22 +20,6 @@ final class Subscription: Codable {
     }
 }
 
-extension Subscription: Equatable {
-    static func == (lhs: Subscription, rhs: Subscription) -> Bool {
-        return (lhs.name == rhs.name) && (lhs.maxAPICalls == rhs.maxAPICalls) && (lhs.period == rhs.period)
-    }
-}
-
-extension Subscription: ReflectionDecodable {
-    static func reflectDecoded() throws -> (Subscription, Subscription) {
-        return (.free, .hobby)
-    }
-
-    static func reflectDecodedIsLeft(_ item: Subscription) throws -> Bool {
-        return item == .free
-    }
-}
-
 extension Subscription: CaseIterable {
     static let allCases: [Subscription] = [.free, .hobby, .business]
 
@@ -63,7 +47,11 @@ extension Subscription: Migration {
     }
 }
 
-extension Calendar.Component: RawRepresentable, Codable {
+extension Calendar.Component: RawRepresentable, Codable, MySQLEnumType {
+    public var rawValue: String {
+        return String(describing: self)
+    }
+
     public init?(rawValue: String) {
         switch rawValue {
         case "era": self = .era
@@ -86,7 +74,7 @@ extension Calendar.Component: RawRepresentable, Codable {
         }
     }
 
-    public var rawValue: String {
-        return String(describing: self)
+    public static func reflectDecoded() throws -> (Calendar.Component, Calendar.Component) {
+        return (.era, .year)
     }
 }
