@@ -20,6 +20,20 @@ final class Subscription: Codable {
     }
 }
 
+struct SubscriptionInserts: Migration {
+    typealias Database = ServiceDatabase
+
+    static func prepare(on conn: ServiceDatabase.Connection) -> EventLoopFuture<Void> {
+        return Subscription.allCases.map { subscription in
+            subscription.create(on: conn)
+        }.flatten(on: conn).transform(to: ())
+    }
+
+    static func revert(on conn: ServiceDatabase.Connection) -> EventLoopFuture<Void> {
+        return Subscription.query(on: conn).delete()
+    }
+}
+
 extension Subscription: CaseIterable {
     static let allCases: [Subscription] = [.free, .hobby, .business]
 
@@ -41,8 +55,7 @@ extension Subscription: Migration {
         return Database.create(self, on: conn) { builder in
             builder.field(for: \.name, isIdentifier: true)
             builder.field(for: \.maxAPICalls, type: .bigint(unsigned: true))
-        }.flatMap {
-            return self.allCases.map { $0.save(on: conn) }.flatten(on: conn).transform(to: ())
+            builder.field(for: \.period)
         }
     }
 }
