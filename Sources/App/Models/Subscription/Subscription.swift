@@ -20,9 +20,25 @@ final class Subscription: Codable {
     }
 }
 
+extension Subscription: Equatable {
+    static func == (lhs: Subscription, rhs: Subscription) -> Bool {
+        return (lhs.name == rhs.name) && (lhs.maxAPICalls == rhs.maxAPICalls) && (lhs.period == rhs.period)
+    }
+}
+
+extension Subscription: ReflectionDecodable {
+    static func reflectDecoded() throws -> (Subscription, Subscription) {
+        return (.free, .hobby)
+    }
+
+    static func reflectDecodedIsLeft(_ item: Subscription) throws -> Bool {
+        return item == .free
+    }
+}
+
 extension Subscription: CaseIterable {
     static let allCases: [Subscription] = [.free, .hobby, .business]
-    
+
     static let subscriptions: [String: Subscription] = {
         return Subscription.allCases.reduce(into: [:]) { map, subscription in map[subscription.name] = subscription }
     }()
