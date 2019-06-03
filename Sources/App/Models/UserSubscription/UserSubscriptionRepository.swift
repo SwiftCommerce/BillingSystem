@@ -12,6 +12,8 @@ protocol UserSubscriptionRepository: ServiceType {
 final class DefaultUserSubscriptionRepository: UserSubscriptionRepository {
     typealias ConnectionPool = DatabaseConnectionPool<ConfiguredDatabase<ServiceDatabase>>
 
+    static var serviceSupports: [Any.Type] = [UserSubscriptionRepository.self]
+
     let pool: ConnectionPool
 
     init(pool: ConnectionPool) {
